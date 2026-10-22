@@ -6,6 +6,7 @@ import { connectToDatabase } from "@/lib/db";
 import Resource from "@/models/Resource";
 import User from "@/models/User";
 import Activity from "@/models/Activity";
+import TeacherWorkItem from "@/models/TeacherWorkItem";
 import { ResourceCard, ResourceData } from "@/components/ResourceCard";
 import { ResourceFilters } from "@/components/ResourceFilters";
 import { SproutIcon, OwlIcon } from "@/components/GardenIcons";
@@ -17,6 +18,7 @@ import {
   Users,
   Activity as ActivityIcon,
   Sparkles,
+  ClipboardList,
 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -44,11 +46,12 @@ export default async function TeacherDashboardPage({
   await connectToDatabase();
 
   // Metrics
-  const [totalResources, publishedCount, draftCount, totalStudents] = await Promise.all([
+  const [totalResources, publishedCount, draftCount, totalStudents, pendingPlannerCount] = await Promise.all([
     Resource.countDocuments(),
     Resource.countDocuments({ publicationStatus: "published" }),
     Resource.countDocuments({ publicationStatus: "draft" }),
     User.countDocuments({ role: "student" }),
+    TeacherWorkItem.countDocuments({ teacherId: teacher.userId, status: { $ne: "completed" } }),
   ]);
 
   // Build Filter Query
@@ -121,10 +124,23 @@ export default async function TeacherDashboardPage({
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <Link
+              href="/teacher/planner"
+              className="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-amber-400 hover:bg-amber-300 text-stone-900 font-extrabold text-sm shadow-xs transition-all hover:scale-102"
+              title="Private School Work, Lesson Plans, Exams, Marks & Notes"
+            >
+              <ClipboardList className="w-5 h-5 text-stone-900" />
+              <span>School Work & Planner</span>
+              {pendingPlannerCount > 0 && (
+                <span className="bg-stone-900 text-amber-300 text-xs px-2 py-0.5 rounded-full font-black">
+                  {pendingPlannerCount}
+                </span>
+              )}
+            </Link>
             <Link
               href="/teacher/resources/new"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition-all hover:scale-102"
+              className="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition-all hover:scale-102"
             >
               <PlusCircle className="w-5 h-5" />
               <span>Plant New Resource</span>
@@ -135,13 +151,6 @@ export default async function TeacherDashboardPage({
             >
               <Users className="w-4 h-4 text-emerald-600" />
               <span>Students ({totalStudents})</span>
-            </Link>
-            <Link
-              href="/teacher/profile"
-              className="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-white border border-stone-200 hover:bg-emerald-50 hover:text-emerald-800 hover:border-emerald-200 text-stone-700 font-bold text-sm shadow-xs transition-colors"
-              title="Edit Teacher Profile & Password"
-            >
-              <span>Profile Settings</span>
             </Link>
           </div>
         </div>

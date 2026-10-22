@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, PlusCircle, Users, BookOpen, User, Settings } from "lucide-react";
+import { LayoutDashboard, PlusCircle, Users, BookOpen, User, Settings, CheckSquare } from "lucide-react";
 
 export function TeacherNavLinks() {
   const pathname = usePathname();
@@ -67,21 +67,21 @@ export function TeacherNavLinks() {
         {isStudentsActive && <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 ml-0.5" />}
       </Link>
 
-      {/* Profile */}
+      {/* Tasks */}
       <Link
-        href="/teacher/profile"
+        href="/teacher/tasks"
         className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm transition-all duration-150 cursor-pointer ${
-          isProfileActive
+          pathname.startsWith("/teacher/tasks")
             ? "bg-emerald-100 text-emerald-900 font-bold border border-emerald-300 shadow-xs"
             : "text-stone-700 hover:text-emerald-800 hover:bg-emerald-50/80 font-semibold border border-transparent"
         }`}
-        aria-current={isProfileActive ? "page" : undefined}
+        aria-current={pathname.startsWith("/teacher/tasks") ? "page" : undefined}
       >
-        <Settings
-          className={`w-4 h-4 ${isProfileActive ? "text-emerald-700" : "text-emerald-600"}`}
+        <CheckSquare
+          className={`w-4 h-4 ${pathname.startsWith("/teacher/tasks") ? "text-emerald-700" : "text-emerald-600"}`}
         />
-        <span>Profile</span>
-        {isProfileActive && <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 ml-0.5" />}
+        <span>Tasks</span>
+        {pathname.startsWith("/teacher/tasks") && <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 ml-0.5" />}
       </Link>
 
       {/* Student View (Preview) */}
@@ -106,8 +106,8 @@ export function TeacherNavLinks() {
 
 export function StudentNavLinks() {
   const pathname = usePathname();
-  const isLibraryActive = pathname === "/student" || (pathname.startsWith("/student/resources") && pathname !== "/student/profile");
-  const isProfileActive = pathname === "/student/profile";
+  const isLibraryActive = pathname === "/student" || (pathname.startsWith("/student/resources") && !pathname.startsWith("/student/tasks"));
+  const isTasksActive = pathname.startsWith("/student/tasks");
 
   return (
     <nav className="flex items-center gap-2" aria-label="Student navigation">
@@ -126,17 +126,17 @@ export function StudentNavLinks() {
       </Link>
 
       <Link
-        href="/student/profile"
+        href="/student/tasks"
         className={`flex items-center gap-2 px-3.5 py-2 rounded-2xl text-sm transition-all duration-150 cursor-pointer ${
-          isProfileActive
+          isTasksActive
             ? "bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold shadow-xs"
             : "text-stone-700 hover:text-emerald-800 hover:bg-emerald-50 font-semibold border border-transparent"
         }`}
-        aria-current={isProfileActive ? "page" : undefined}
+        aria-current={isTasksActive ? "page" : undefined}
       >
-        <User className="w-4 h-4 text-emerald-700" />
-        <span>My Profile</span>
-        {isProfileActive && <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 ml-0.5" />}
+        <CheckSquare className="w-4 h-4 text-emerald-700" />
+        <span>My Tasks</span>
+        {isTasksActive && <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 ml-0.5" />}
       </Link>
     </nav>
   );

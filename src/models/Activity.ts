@@ -10,7 +10,10 @@ export type ActivityAction =
   | "STUDENT_STATUS_CHANGED"
   | "STUDENT_PERMISSIONS_CHANGED"
   | "PROFILE_UPDATED"
-  | "PASSWORD_CHANGED";
+  | "PASSWORD_CHANGED"
+  | "TASK_CREATED"
+  | "TASK_SUBMITTED"
+  | "TASK_REVIEWED";
 
 export interface IActivity extends Document {
   action: ActivityAction;
