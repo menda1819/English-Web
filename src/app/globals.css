@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #faf8f3;
+    --foreground: #2d3748;
+    --card: #ffffff;
+    --card-foreground: #2d3748;
+    --garden-green: #15803d;
+    --garden-green-light: #e8f5e9;
+    --garden-blue: #0284c7;
+    --garden-blue-light: #e0f2fe;
+    --garden-sunshine: #f59e0b;
+    --garden-sunshine-light: #fef3c7;
+    --garden-coral: #e11d48;
+    --garden-coral-light: #ffe4e6;
+    --garden-lavender: #7c3aed;
+    --garden-lavender-light: #f3e8ff;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-feature-settings: "rlig" 1, "calt" 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Custom micro-animations */
+@keyframes garden-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes garden-wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes garden-gentle-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+.animate-garden-float {
+  animation: garden-float 4s ease-in-out infinite;
+}
+
+.animate-garden-wiggle {
+  animation: garden-wiggle 3s ease-in-out infinite;
+}
+
+.animate-garden-pulse {
+  animation: garden-gentle-pulse 2.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-garden-float,
+  .animate-garden-wiggle,
+  .animate-garden-pulse {
+    animation: none !important;
+  }
+}
+
+/* Classroom garden scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f0ea;
+}
+::-webkit-scrollbar-thumb {
+  background: #c2c9d1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
