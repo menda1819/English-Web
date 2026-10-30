@@ -2,6 +2,8 @@
 
 @layer base {
   :root {
+    --font-fredoka: "Fredoka", "Nunito", system-ui, sans-serif;
+    --font-nunito: "Nunito", system-ui, sans-serif;
     --background: #faf8f3;
     --foreground: #2d3748;
     --card: #ffffff;
